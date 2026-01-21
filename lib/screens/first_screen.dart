@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scube_task/data/option_list.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -62,11 +63,49 @@ class _FirstScreenState extends State<FirstScreen> {
                 )
               ),
               SizedBox(height: 10,),
+              buildOptionsGridView(),
+              SizedBox(height: 10,),
 
             ]
           ),
         )
       ),
+    );
+  }
+
+  GridView buildOptionsGridView() {
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 3,
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 5,
+        ),
+        itemCount: options.length,
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            padding: EdgeInsets.all(2),
+            child: Row(
+              children: [
+                Image.asset(options[index].imageUrl, width: 30, height: 30, fit: BoxFit.contain),
+                SizedBox(width: 2,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(options[index].title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),),
+                    Text(options[index].description, style: TextStyle(fontSize: 8, ))
+                  ],
+                )
+              ],
+            ),
+          );
+        }
     );
   }
 }
