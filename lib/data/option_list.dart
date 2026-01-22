@@ -62,3 +62,36 @@ final List<StatData> stats = [
     today: '0.94 kWh/kWp',
   ),
 ];
+
+final List<Option> powers = [
+  Option(
+    imageUrl: 'assets/power2.png',
+    title: 'Total AC Capacity',
+    description: '3000 KW',
+  ),
+  Option(
+    imageUrl: 'assets/power3.png',
+    title: 'Total DC Capacity',
+    description: '3.727 MWp',
+  ),
+  Option(
+    imageUrl: 'assets/power4.png',
+    title: 'Date of Commissioning',
+    description: '17/07/2024'
+  ),
+  Option(
+    imageUrl: 'assets/power5.png',
+    title: 'Number of Inverter',
+    description: '30'
+  ),
+  Option(
+    imageUrl: 'assets/power2.png',
+    title: 'Total AC Capacity',
+    description: '3000 KW',
+  ),
+  Option(
+    imageUrl: 'assets/power3.png',
+    title: 'Total DC Capacity',
+    description: '3.727 MWp',
+  ),
+];

@@ -35,10 +35,10 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xFFFFFFFF),
           centerTitle: true,
-          elevation: 3,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
+            elevation: 0,
             backgroundColor: Color(0xFF0096FC),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(

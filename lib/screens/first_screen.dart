@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scube_task/data/option_list.dart';
 import 'package:scube_task/data/temperature_data.dart';
+import 'package:scube_task/models/option_model.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -11,8 +13,7 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   late int temperature;
-  late double height;
-  late Color color;
+  late String thermometer;
   late String image;
 
   @override
@@ -20,8 +21,7 @@ class _FirstScreenState extends State<FirstScreen> {
     super.initState();
     final temp = getTemperature(DateTime.now());
     temperature = temp.temperature;
-    height = temp.height;
-    color = temp.color;
+    thermometer = temp.thermometer;
     image = temp.image;
   }
   @override
@@ -82,100 +82,288 @@ class _FirstScreenState extends State<FirstScreen> {
               SizedBox(height: 12,),
               buildTemperatureContainer(context),
               SizedBox(height: 12,),
+              buildDataTable(),
+              SizedBox(height: 12,),
               Container(
+                height: 40,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(4),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Column(
+                padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: SizedBox(),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Yesterday's Data",
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Today's Data",
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    ),
-                    Container(
-                      height: 0.5,
-                      width: double.infinity,
-                      color: Colors.black,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: stats.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          color: index % 2 == 0 ? Colors.transparent : Color(0xFFEEF3F9),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  stats[index].label,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  stats[index].yesterday,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  stats[index].today,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+                    Image.asset('assets/power1.png', height: 22, fit: BoxFit.contain,),
+                    SizedBox(width: 8,),
+                    Text('Total Num of PV Module', style: TextStyle(fontSize: 10),),
+                    SizedBox(width: 4,),
+                    Text(
+                      ': 6372 pcs.(585 Wp each)',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     )
-                  ]
-                )
-              )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10,),
+              buildSecondGridView(),
+              SizedBox(height: 12,),
+              buildLT01Container(context),
+              SizedBox(height: 10,),
+              buildLT01Container(context),
+              SizedBox(height: 10,),
             ]
           ),
         )
+      ),
+    );
+  }
+
+  Container buildLT01Container(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Color(0xFFB9C6D6), width: 1),
+      ),
+      padding: EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'LT_01',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/energy.svg',
+                    height: 16,
+                    width: 16,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    '495.505 kWp / 440 kW',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 4),
+          Container(
+            height: 0.5,
+            width: double.infinity,
+            color: Color(0xFFAFCCDF),
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              buildEnergyBox(
+                Option(
+                  imageUrl: 'assets/energy1.svg',
+                  title: 'Lifetime Energy',
+                  description: '352.96 MWh',
+                ),
+              ),
+              SizedBox(width: 50),
+              buildEnergyBox(
+                Option(
+                  imageUrl: 'assets/energy2.svg',
+                  title: 'Today Energy',
+                  description: '273.69 kWh',
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              buildEnergyBox(
+                Option(
+                  imageUrl: 'assets/energy3.svg',
+                  title: 'Prev. Meter Energy',
+                  description: '0.00 MWh',
+                ),
+              ),
+              SizedBox(width: 50),
+              buildEnergyBox(
+                Option(
+                  imageUrl: 'assets/energy4.svg',
+                  title: 'Live Power',
+                  description: '352.96 MWh',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox buildEnergyBox(Option option) {
+    return SizedBox(
+      height: 26,
+      width: 120,
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            option.imageUrl,
+            height: 26,
+            width: 26,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(width: 4),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(option.title, style: TextStyle(fontSize: 8)),
+              Text(
+                option.description,
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  GridView buildSecondGridView() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 4.3,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+      ),
+      itemCount: powers.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          padding: EdgeInsets.all(4),
+          child: Row(
+            children: [
+              Image.asset(
+                powers[index].imageUrl,
+                width: 22,
+                height: 22,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(width: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(powers[index].title, style: TextStyle(fontSize: 10)),
+                  Text(
+                    powers[index].description,
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+  Container buildDataTable() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8),
+            child: Row(
+              children: [
+                Expanded(flex: 1, child: SizedBox()),
+                Expanded(
+                  flex: 1,
+                  child: Text("Yesterday's Data", style: TextStyle(fontSize: 12)),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Today's Data",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(height: 0.5, width: double.infinity, color: Colors.black),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: stats.length,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                color: index % 2 == 0 ? Colors.transparent : Color(0xFFEEF3F9),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        stats[index].label,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        stats[index].yesterday,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        stats[index].today,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -202,7 +390,7 @@ class _FirstScreenState extends State<FirstScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(8),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,7 +398,7 @@ class _FirstScreenState extends State<FirstScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('$temperature°C', style: TextStyle(
+                  Text('$temperature°c', style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.primary,
@@ -224,7 +412,9 @@ class _FirstScreenState extends State<FirstScreen> {
                       )
                   )
                 ],
-              )
+              ),
+              Spacer(),
+              SvgPicture.asset(thermometer, width: 80, height: 80, fit: BoxFit.contain),
             ]
         ),
       ),
@@ -309,7 +499,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 ),
               ),
               SizedBox(width: 10,),
-              Image.asset(image, width: 60, height: 60, fit: BoxFit.contain)
+              SvgPicture.asset(image, width: 60, height: 60, fit: BoxFit.contain)
             ]
         )
     );
