@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scube_task/data/option_list.dart';
 import 'package:scube_task/data/temperature_data.dart';
 import 'package:scube_task/models/option_model.dart';
+import 'package:scube_task/screens/second_screen.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -59,7 +60,12 @@ class _FirstScreenState extends State<FirstScreen> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecondScreen()),
+                  );
+                },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF00C0E8),
                       foregroundColor: Colors.white,

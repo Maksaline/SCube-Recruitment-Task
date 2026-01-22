@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:scube_task/models/option_model.dart';
+import 'package:scube_task/models/source_model.dart';
 
 import '../models/stats_model.dart';
 
@@ -93,5 +96,32 @@ final List<Option> powers = [
     imageUrl: 'assets/power3.png',
     title: 'Total DC Capacity',
     description: '3.727 MWp',
+  ),
+];
+
+final List<Source> sources = [
+  Source(
+    image: 'assets/source1.png',
+    color: Color(0xFF78C6FF),
+    title: 'Data View',
+    active: true,
+  ),
+  Source(
+    image: 'assets/source2.png',
+    color: Color(0xFFFB902E),
+    title: 'Data Type 2',
+    active: false,
+  ),
+  Source(
+    image: 'assets/source3.png',
+    color: Color(0xFF78C6FF),
+    title: 'Data Type 3',
+    active: true,
+  ),
+  Source(
+    image: 'assets/source1.png',
+    color: Color(0xFF78C6FF),
+    title: 'Total Solar',
+    active: true,
   ),
 ];
