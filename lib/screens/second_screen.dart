@@ -70,7 +70,50 @@ class _SecondScreenState extends State<SecondScreen> {
                   )
               ),
               SizedBox(height: 12,),
-              buildMainContainer(context)
+              buildMainContainer(context),
+              SizedBox(height: 12,),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 4,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 16,
+                ),
+                itemCount: grids.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Color(0xFFB6B8D0),
+                        width: 1,
+                      )
+                    ),
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          grids[index].imageUrl,
+                          width: 24,
+                          height: 24,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          grids[index].title,
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF646984)),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
@@ -90,8 +133,7 @@ class _SecondScreenState extends State<SecondScreen> {
         children: [
           Row(
             children:
-            tabs
-                .map(
+            tabs.map(
                   (tab) => Expanded(
                 child: InkWell(
                   onTap: () {

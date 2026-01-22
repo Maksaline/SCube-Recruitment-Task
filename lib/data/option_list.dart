@@ -125,3 +125,36 @@ final List<Source> sources = [
     active: true,
   ),
 ];
+
+final List<Option> grids = [
+  Option(
+    imageUrl: 'assets/grid1.png',
+    title: 'Analysis Pro',
+    description: 'N/A'
+  ),
+  Option(
+      imageUrl: 'assets/grid2.png',
+      title: 'G. Generator',
+      description: 'N/A'
+  ),
+  Option(
+      imageUrl: 'assets/grid3.png',
+      title: 'Plant Summery',
+      description: 'N/A'
+  ),
+  Option(
+      imageUrl: 'assets/grid4.png',
+      title: 'Natural Gas',
+      description: 'N/A'
+  ),
+  Option(
+      imageUrl: 'assets/grid5.png',
+      title: 'D. Generator',
+      description: 'N/A'
+  ),
+  Option(
+      imageUrl: 'assets/grid6.png',
+      title: 'Water Process',
+      description: 'N/A'
+  ),
+];
